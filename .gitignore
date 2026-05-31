@@ -1,0 +1,92 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# ==============================
+# ======   GITIGNORE   =========
+# ==============================
+
+# Root-level E2E harness installs @playwright/test from the root
+# package.json so the cross-repo __tests__/e2e/ai-chat/ config can
+# resolve its imports. The lockfile + node_modules + test-results are
+# local artifacts; the package.json itself is tracked.
+/node_modules
+/bun.lock
+/test-results
+
+/samples
+samples/*
+
+.DS_Store
+/.DS_Store
+.DS_Store/*
+
+/.idea
+.idea/*
+
+/.vscode
+.vscode/*
+
+
+# ==============================
+# ======   GITIGNORE   =========
+# ==============================
+
+
+# Git identity configuration (contains email addresses)
+.git-identities.conf
+
+# Ignore all .env files
+.env*
+# But don't ignore the templates
+!.env.example
+!.env.template
+!template.env
+!.env.local.example
+!.env.production.example
+!.env.deploy.example
+
+# Runtime data (uploaded files)
+/storage
+
+# ==============================
+# ======   GITIGNORE   =========
+# ==============================
