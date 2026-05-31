@@ -1,13 +1,32 @@
-import { Sparkles, TrendingUp, FileCheck2, Clock, Play } from "lucide-react";
+import { Clock, FileCheck2, Play, Sparkles, TrendingUp } from "lucide-react";
 import type { Skill } from "../data/silf";
-import { cn } from "./ui/utils";
 import { useStore } from "../state/store";
+import { cn } from "./ui/utils";
 
-const statusMeta: Record<Skill["status"], { label: string; icon: typeof Sparkles; tone: string }> = {
-  stable:   { label: "Stable",    icon: FileCheck2, tone: "bg-neutral-100 text-neutral-700" },
-  born:     { label: "Born",      icon: Sparkles,   tone: "bg-emerald-100 text-emerald-700" },
-  evolved:  { label: "Evolved",   icon: TrendingUp, tone: "bg-amber-100 text-amber-800" },
-  review:   { label: "In review", icon: Clock,      tone: "bg-rose-100 text-rose-700" },
+const statusMeta: Record<
+  Skill["status"],
+  { label: string; icon: typeof Sparkles; tone: string }
+> = {
+  stable: {
+    label: "Stable",
+    icon: FileCheck2,
+    tone: "bg-neutral-100 text-neutral-700",
+  },
+  born: {
+    label: "Born",
+    icon: Sparkles,
+    tone: "bg-emerald-100 text-emerald-700",
+  },
+  evolved: {
+    label: "Evolved",
+    icon: TrendingUp,
+    tone: "bg-amber-100 text-amber-800",
+  },
+  review: {
+    label: "In review",
+    icon: Clock,
+    tone: "bg-rose-100 text-rose-700",
+  },
 };
 
 export function SkillsList() {
@@ -34,7 +53,9 @@ function FeaturedSkill({ skill, onRun }: { skill: Skill; onRun: () => void }) {
         <div className="min-w-0">
           <p className="text-xs text-neutral-500">{skill.domain}</p>
           <p className="mt-0.5 text-sm">{skill.title}</p>
-          <p className="mt-1 text-xs text-neutral-500">Last run: {skill.lastRun}</p>
+          <p className="mt-1 text-xs text-neutral-500">
+            Last run: {skill.lastRun}
+          </p>
         </div>
         <div className="text-right">
           <p className="text-neutral-900">{skill.progress}%</p>
@@ -48,11 +69,19 @@ function FeaturedSkill({ skill, onRun }: { skill: Skill; onRun: () => void }) {
         />
       </div>
       <div className="mt-3 flex items-center gap-2">
-        <span className={cn("px-2 py-0.5 rounded-full text-xs flex items-center gap-1", meta.tone)}>
+        <span
+          className={cn(
+            "px-2 py-0.5 rounded-full text-xs flex items-center gap-1",
+            meta.tone,
+          )}
+        >
           <Icon className="size-3" /> {meta.label}
         </span>
-        <span className="text-xs text-neutral-500">{skill.uses.toLocaleString()} runs</span>
+        <span className="text-xs text-neutral-500">
+          {skill.uses.toLocaleString()} runs
+        </span>
         <button
+          type="button"
           onClick={onRun}
           className="ml-auto px-3 py-1 rounded-full bg-neutral-900 text-white text-xs flex items-center gap-1.5 hover:bg-neutral-800"
         >
@@ -68,6 +97,7 @@ function SkillRow({ skill, onSelect }: { skill: Skill; onSelect: () => void }) {
   const Icon = meta.icon;
   return (
     <button
+      type="button"
       onClick={onSelect}
       className="text-left rounded-2xl bg-white border border-neutral-100 p-3.5 flex items-center gap-3 hover:border-neutral-300 transition-colors"
     >
@@ -77,7 +107,11 @@ function SkillRow({ skill, onSelect }: { skill: Skill; onSelect: () => void }) {
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <p className="truncate text-sm">{skill.title}</p>
-          <span className={cn("px-1.5 py-0.5 rounded-full text-[10px]", meta.tone)}>{meta.label}</span>
+          <span
+            className={cn("px-1.5 py-0.5 rounded-full text-[10px]", meta.tone)}
+          >
+            {meta.label}
+          </span>
         </div>
         <div className="mt-1.5 h-1.5 rounded-full bg-neutral-100 overflow-hidden">
           <div

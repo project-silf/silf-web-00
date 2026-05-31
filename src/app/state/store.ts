@@ -2,18 +2,19 @@
 // Centralizes mutations so every panel can drive every other panel.
 
 import { createContext, useContext } from "react";
-import type {
-  ChatMessage,
-  KeyPoint,
-  Skill,
-  Soul,
-} from "../data/silf";
+import type { ChatMessage, KeyPoint, Skill, Soul } from "../data/silf";
 
-export type NavKey = "souls" | "graph" | "skills" | "corpus" | "chat" | "history";
+export type NavKey =
+  | "souls"
+  | "graph"
+  | "skills"
+  | "corpus"
+  | "chat"
+  | "history";
 
 export type AuditEntry = {
   id: string;
-  at: string;       // HH:MM
+  at: string; // HH:MM
   soulId: string;
   soulName: string;
   text: string;

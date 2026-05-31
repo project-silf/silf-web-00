@@ -1,14 +1,24 @@
-import { Sparkles, Network, BookOpenText, MessagesSquare, History, Boxes, Bell, Settings, Share2, Users } from "lucide-react";
+import {
+  Bell,
+  BookOpenText,
+  Boxes,
+  History,
+  MessagesSquare,
+  Settings,
+  Share2,
+  Sparkles,
+  Users,
+} from "lucide-react";
+import { type NavKey, useStore } from "../state/store";
 import { cn } from "./ui/utils";
-import { useStore, type NavKey } from "../state/store";
 
 const items: Array<{ key: NavKey; icon: typeof Sparkles; label: string }> = [
-  { key: "souls",   icon: Users,          label: "Souls" },
-  { key: "graph",   icon: Share2,         label: "Graph" },
-  { key: "skills",  icon: Boxes,          label: "Skills" },
-  { key: "corpus",  icon: BookOpenText,   label: "Corpus" },
-  { key: "chat",    icon: MessagesSquare, label: "Companion" },
-  { key: "history", icon: History,        label: "Audit" },
+  { key: "souls", icon: Users, label: "Souls" },
+  { key: "graph", icon: Share2, label: "Graph" },
+  { key: "skills", icon: Boxes, label: "Skills" },
+  { key: "corpus", icon: BookOpenText, label: "Corpus" },
+  { key: "chat", icon: MessagesSquare, label: "Companion" },
+  { key: "history", icon: History, label: "Audit" },
 ];
 
 export function IconRail() {
@@ -21,6 +31,7 @@ export function IconRail() {
       {items.map(({ key, icon: Icon, label }) => (
         <button
           key={key}
+          type="button"
           aria-label={label}
           title={label}
           onClick={() => setNav(key)}
@@ -28,17 +39,25 @@ export function IconRail() {
             "size-10 rounded-xl flex items-center justify-center transition-colors",
             activeNav === key
               ? "bg-neutral-900 text-white shadow-md"
-              : "bg-white/70 text-neutral-600 hover:bg-white"
+              : "bg-white/70 text-neutral-600 hover:bg-white",
           )}
         >
           <Icon className="size-4" />
         </button>
       ))}
       <div className="flex-1" />
-      <button aria-label="Notifications" className="size-10 rounded-xl bg-white/70 text-neutral-600 hover:bg-white flex items-center justify-center">
+      <button
+        type="button"
+        aria-label="Notifications"
+        className="size-10 rounded-xl bg-white/70 text-neutral-600 hover:bg-white flex items-center justify-center"
+      >
         <Bell className="size-4" />
       </button>
-      <button aria-label="Settings" className="size-10 rounded-xl bg-white/70 text-neutral-600 hover:bg-white flex items-center justify-center">
+      <button
+        type="button"
+        aria-label="Settings"
+        className="size-10 rounded-xl bg-white/70 text-neutral-600 hover:bg-white flex items-center justify-center"
+      >
         <Settings className="size-4" />
       </button>
     </aside>

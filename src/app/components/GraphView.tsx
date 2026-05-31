@@ -1,14 +1,23 @@
 import { useState } from "react";
+import { type NodeType, nodes, nodeTypeMeta } from "../data/graph";
 import { GraphCanvas } from "./graph/GraphCanvas";
 import { NodeDetail } from "./graph/NodeDetail";
-import { nodeTypeMeta, type NodeType, nodes } from "../data/graph";
 import { cn } from "./ui/utils";
 
-const ALL_TYPES: NodeType[] = ["organization", "customer", "employee", "agent", "skill", "corpus"];
+const ALL_TYPES: NodeType[] = [
+  "organization",
+  "customer",
+  "employee",
+  "agent",
+  "skill",
+  "corpus",
+];
 
 export function GraphView() {
   const [selectedId, setSelectedId] = useState<string>("org-northwind");
-  const [filterTypes, setFilterTypes] = useState<Set<NodeType>>(new Set(ALL_TYPES));
+  const [filterTypes, setFilterTypes] = useState<Set<NodeType>>(
+    new Set(ALL_TYPES),
+  );
 
   const toggle = (t: NodeType) => {
     setFilterTypes((prev) => {
@@ -19,10 +28,20 @@ export function GraphView() {
     });
   };
 
-  const counts = ALL_TYPES.reduce<Record<NodeType, number>>((acc, t) => {
-    acc[t] = nodes.filter((n) => n.type === t).length;
-    return acc;
-  }, { organization: 0, customer: 0, employee: 0, agent: 0, skill: 0, corpus: 0 });
+  const counts = ALL_TYPES.reduce<Record<NodeType, number>>(
+    (acc, t) => {
+      acc[t] = nodes.filter((n) => n.type === t).length;
+      return acc;
+    },
+    {
+      organization: 0,
+      customer: 0,
+      employee: 0,
+      agent: 0,
+      skill: 0,
+      corpus: 0,
+    },
+  );
 
   return (
     <div className="grid grid-cols-12 gap-3 h-full min-h-0">
@@ -36,16 +55,26 @@ export function GraphView() {
             return (
               <button
                 key={t}
+                type="button"
                 onClick={() => toggle(t)}
                 className={cn(
                   "px-2.5 py-1 rounded-full text-xs flex items-center gap-1.5 border transition-all",
-                  on ? "bg-white border-neutral-300" : "bg-neutral-100 border-neutral-200 text-neutral-400 line-through"
+                  on
+                    ? "bg-white border-neutral-300"
+                    : "bg-neutral-100 border-neutral-200 text-neutral-400 line-through",
                 )}
-                style={on ? { boxShadow: `inset 0 0 0 1px ${m.ring}` } : undefined}
+                style={
+                  on ? { boxShadow: `inset 0 0 0 1px ${m.ring}` } : undefined
+                }
               >
-                <span className="size-2 rounded-full" style={{ background: m.ring }} />
+                <span
+                  className="size-2 rounded-full"
+                  style={{ background: m.ring }}
+                />
                 {m.label}
-                <span className="text-[10px] text-neutral-500">{counts[t]}</span>
+                <span className="text-[10px] text-neutral-500">
+                  {counts[t]}
+                </span>
               </button>
             );
           })}

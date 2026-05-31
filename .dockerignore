@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.agents
+.claude
+.pm
+*.md
+.env*
+.DS_Store
+coverage
+test-results
+bun.lockb

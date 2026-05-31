@@ -165,10 +165,25 @@ export const skills: Skill[] = [
 ];
 
 export const keyPoints: KeyPoint[] = [
-  { id: "k1", text: "Pull customer corpus & last 4 reports", time: "00:42", done: true },
+  {
+    id: "k1",
+    text: "Pull customer corpus & last 4 reports",
+    time: "00:42",
+    done: true,
+  },
   { id: "k2", text: "Apply Orion know-how overlay", time: "01:15", done: true },
-  { id: "k3", text: "Cross-check MiFID II clauses", time: "02:08", done: false },
-  { id: "k4", text: "Draft narrative in customer tone", time: "03:50", done: false },
+  {
+    id: "k3",
+    text: "Cross-check MiFID II clauses",
+    time: "02:08",
+    done: false,
+  },
+  {
+    id: "k4",
+    text: "Draft narrative in customer tone",
+    time: "03:50",
+    done: false,
+  },
   { id: "k5", text: "Route to human approval", time: "—", done: false },
 ];
 

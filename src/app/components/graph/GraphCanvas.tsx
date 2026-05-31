@@ -1,5 +1,11 @@
 import { useMemo, useState } from "react";
-import { edges, nodes, nodeTypeMeta, type GraphNode, type NodeType } from "../../data/graph";
+import {
+  edges,
+  type GraphNode,
+  type NodeType,
+  nodes,
+  nodeTypeMeta,
+} from "../../data/graph";
 
 type Props = {
   selectedId: string;
@@ -8,12 +14,12 @@ type Props = {
 };
 
 const EDGE_TONE: Record<string, string> = {
-  feeds:          "#93c5fd",
-  uses:           "#cbd5e1",
-  "trained-on":   "#fdba74",
-  "owned-by":     "#fde68a",
+  feeds: "#93c5fd",
+  uses: "#cbd5e1",
+  "trained-on": "#fdba74",
+  "owned-by": "#fde68a",
   "evolved-from": "#a5b4fc",
-  "talks-to":     "#6ee7b7",
+  "talks-to": "#6ee7b7",
 };
 
 export function GraphCanvas({ selectedId, onSelect, filterTypes }: Props) {
@@ -21,12 +27,15 @@ export function GraphCanvas({ selectedId, onSelect, filterTypes }: Props) {
 
   const visibleNodes = useMemo(
     () => nodes.filter((n) => filterTypes.has(n.type)),
-    [filterTypes]
+    [filterTypes],
   );
-  const visibleIds = useMemo(() => new Set(visibleNodes.map((n) => n.id)), [visibleNodes]);
+  const visibleIds = useMemo(
+    () => new Set(visibleNodes.map((n) => n.id)),
+    [visibleNodes],
+  );
   const visibleEdges = useMemo(
     () => edges.filter((e) => visibleIds.has(e.from) && visibleIds.has(e.to)),
-    [visibleIds]
+    [visibleIds],
   );
 
   const focusedNeighbors = useMemo(() => {
@@ -58,16 +67,25 @@ export function GraphCanvas({ selectedId, onSelect, filterTypes }: Props) {
               className="px-2 py-0.5 rounded-full text-[10px] flex items-center gap-1 bg-white/80 backdrop-blur"
               style={{ opacity: on ? 1 : 0.4 }}
             >
-              <span className="size-2 rounded-full" style={{ background: m.ring }} />
+              <span
+                className="size-2 rounded-full"
+                style={{ background: m.ring }}
+              />
               {m.label}
             </span>
           );
         })}
       </div>
 
-      <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" className="w-full h-full">
+      <svg
+        role="img"
+        aria-label="Knowledge graph"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid meet"
+        className="w-full h-full"
+      >
         {/* Edges */}
-        {visibleEdges.map((e, i) => {
+        {visibleEdges.map((e) => {
           const a = byId(e.from);
           const b = byId(e.to);
           if (!a || !b) return null;
@@ -76,8 +94,11 @@ export function GraphCanvas({ selectedId, onSelect, filterTypes }: Props) {
             : false;
           return (
             <line
-              key={`${e.from}-${e.to}-${i}`}
-              x1={a.x} y1={a.y} x2={b.x} y2={b.y}
+              key={`${e.from}-${e.to}-${e.kind}`}
+              x1={a.x}
+              y1={a.y}
+              x2={b.x}
+              y2={b.y}
               stroke={EDGE_TONE[e.kind] ?? "#cbd5e1"}
               strokeWidth={isFocused ? 0.5 : 0.18}
               strokeOpacity={focusId && !isFocused ? 0.15 : 0.7}
@@ -94,14 +115,36 @@ export function GraphCanvas({ selectedId, onSelect, filterTypes }: Props) {
           return (
             <g
               key={n.id}
+              role="button"
+              tabIndex={0}
+              aria-label={`Select ${n.label}`}
               transform={`translate(${n.x},${n.y})`}
               onMouseEnter={() => setHoverId(n.id)}
               onMouseLeave={() => setHoverId(null)}
               onClick={() => onSelect(n.id)}
-              style={{ cursor: "pointer", opacity: dim ? 0.25 : 1, transition: "opacity .15s" }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onSelect(n.id);
+                }
+              }}
+              style={{
+                cursor: "pointer",
+                opacity: dim ? 0.25 : 1,
+                transition: "opacity .15s",
+              }}
             >
-              <circle r={r + 1.4} fill={m.ring} fillOpacity={isSel ? 0.9 : 0.35} />
-              <circle r={r} fill={m.bg} stroke={m.color} strokeWidth={isSel ? 0.5 : 0.25} />
+              <circle
+                r={r + 1.4}
+                fill={m.ring}
+                fillOpacity={isSel ? 0.9 : 0.35}
+              />
+              <circle
+                r={r}
+                fill={m.bg}
+                stroke={m.color}
+                strokeWidth={isSel ? 0.5 : 0.25}
+              />
               {n.type === "organization" && (
                 <circle r={r * 0.45} fill={m.color} fillOpacity={0.8} />
               )}

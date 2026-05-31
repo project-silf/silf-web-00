@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { type ReactNode, useCallback, useMemo, useState } from "react";
 import {
   chat as seedChat,
   keyPoints as seedKeyPoints,
@@ -6,7 +6,7 @@ import {
   souls as seedSouls,
 } from "../data/silf";
 import type { AuditEntry, NavKey } from "./store";
-import { StoreCtx, now, uid } from "./store";
+import { now, StoreCtx, uid } from "./store";
 
 const COMPANION_REPLIES = [
   "Got it — I'll route that through the active Soul and capture the trace.",
@@ -21,7 +21,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [keyPoints, setKeyPoints] = useState(seedKeyPoints);
   const [chat, setChat] = useState(seedChat);
   const [audit, setAudit] = useState<AuditEntry[]>([
-    { id: uid(), at: "09:40", soulId: souls[1].id, soulName: souls[1].name, text: "Session opened", level: "info" },
+    {
+      id: uid(),
+      at: "09:40",
+      soulId: souls[1].id,
+      soulName: souls[1].name,
+      text: "Session opened",
+      level: "info",
+    },
   ]);
 
   const [activeNav, setActiveNav] = useState<NavKey>("souls");
@@ -33,11 +40,18 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const pushAudit = useCallback(
     (text: string, level: AuditEntry["level"] = "info") => {
       setAudit((prev) => [
-        { id: uid(), at: now(), soulId: activeSoulId, soulName: activeSoul.name, text, level },
+        {
+          id: uid(),
+          at: now(),
+          soulId: activeSoulId,
+          soulName: activeSoul.name,
+          text,
+          level,
+        },
         ...prev,
       ]);
     },
-    [activeSoulId, activeSoul.name]
+    [activeSoulId, activeSoul.name],
   );
 
   const selectSoul = useCallback(
@@ -46,12 +60,19 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       const s = souls.find((x) => x.id === id);
       if (s) {
         setAudit((prev) => [
-          { id: uid(), at: now(), soulId: id, soulName: s.name, text: `Switched to ${s.name}`, level: "info" },
+          {
+            id: uid(),
+            at: now(),
+            soulId: id,
+            soulName: s.name,
+            text: `Switched to ${s.name}`,
+            level: "info",
+          },
           ...prev,
         ]);
       }
     },
-    [souls]
+    [souls],
   );
 
   const featureSkill = useCallback(
@@ -60,12 +81,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       const s = skills.find((x) => x.id === id);
       if (s) pushAudit(`Selected skill "${s.title}"`);
     },
-    [skills, pushAudit]
+    [skills, pushAudit],
   );
 
   const toggleKeyPoint = useCallback((id: string) => {
     setKeyPoints((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, done: !p.done } : p))
+      prev.map((p) => (p.id === id ? { ...p, done: !p.done } : p)),
     );
   }, []);
 
@@ -76,8 +97,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       prev.map((s) =>
         s.id === featuredSkillId
           ? { ...s, progress: Math.min(100, s.progress + 12), uses: s.uses + 1 }
-          : s
-      )
+          : s,
+      ),
     );
     setKeyPoints((prev) => {
       const next = [...prev];
@@ -98,9 +119,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       if (!t) return;
       const mine = { id: uid(), author: "you" as const, text: t, time: now() };
       setChat((prev) => [...prev, mine]);
-      pushAudit(`Asked companion: "${t.slice(0, 48)}${t.length > 48 ? "…" : ""}"`);
+      pushAudit(
+        `Asked companion: "${t.slice(0, 48)}${t.length > 48 ? "…" : ""}"`,
+      );
       setTimeout(() => {
-        const reply = COMPANION_REPLIES[Math.floor(Math.random() * COMPANION_REPLIES.length)];
+        const reply =
+          COMPANION_REPLIES[
+            Math.floor(Math.random() * COMPANION_REPLIES.length)
+          ];
         setChat((prev) => [
           ...prev,
           {
@@ -113,7 +139,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         ]);
       }, 650);
     },
-    [pushAudit]
+    [pushAudit],
   );
 
   const inviteCollaborator = useCallback(() => {
@@ -122,14 +148,40 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(
     () => ({
-      souls, skills, keyPoints, chat, audit,
-      activeNav, activeSoulId, featuredSkillId,
+      souls,
+      skills,
+      keyPoints,
+      chat,
+      audit,
+      activeNav,
+      activeSoulId,
+      featuredSkillId,
       setNav: setActiveNav,
-      selectSoul, featureSkill, toggleKeyPoint,
-      runSkill, sendForApproval, sendChat, inviteCollaborator,
+      selectSoul,
+      featureSkill,
+      toggleKeyPoint,
+      runSkill,
+      sendForApproval,
+      sendChat,
+      inviteCollaborator,
     }),
-    [souls, skills, keyPoints, chat, audit, activeNav, activeSoulId, featuredSkillId,
-     selectSoul, featureSkill, toggleKeyPoint, runSkill, sendForApproval, sendChat, inviteCollaborator]
+    [
+      souls,
+      skills,
+      keyPoints,
+      chat,
+      audit,
+      activeNav,
+      activeSoulId,
+      featuredSkillId,
+      selectSoul,
+      featureSkill,
+      toggleKeyPoint,
+      runSkill,
+      sendForApproval,
+      sendChat,
+      inviteCollaborator,
+    ],
   );
 
   return <StoreCtx.Provider value={value}>{children}</StoreCtx.Provider>;
